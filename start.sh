@@ -9,6 +9,10 @@ export APP_HOST=${APP_HOST:-bolt-diy}
 export APP_PORT=${APP_PORT:-5173}
 envsubst '$APP_HOST $APP_PORT' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf
 
+# Mostrar o conteúdo do arquivo default.conf
+echo "Generated default.conf:"
+cat /etc/nginx/conf.d/default.conf
+
 # Test Nginx config
 nginx -t
 
