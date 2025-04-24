@@ -1,0 +1,21 @@
+# Environment files
+.env
+
+# Generated files
+.htpasswd
+
+# Log files
+*.log
+
+# Temporary files
+*.tmp
+
+# Docker directories
+.docker/
+
+# Node.js dependencies
+node_modules/
+
+# System files
+.DS_Store
+Thumbs.db
