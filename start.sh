@@ -1,13 +1,16 @@
-#!/bin/sh
+#!/bin/bash
+set -e
 
-# Generate credentials file
+echo "Generating .htpasswd file with credentials..."
 htpasswd -cb /etc/nginx/auth/.htpasswd ${AUTH_USER:-admin} ${AUTH_PASSWORD:-railway}
 
-# Apply configuration
-cat /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf
+echo "Configuring Nginx with APP_HOST=${APP_HOST} and APP_PORT=${APP_PORT}..."
+export APP_HOST=${APP_HOST:-bolt-diy}
+export APP_PORT=${APP_PORT:-5173}
+envsubst '$APP_HOST $APP_PORT' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf
 
-# Check nginx config
+# Test Nginx config
 nginx -t
 
-# Start nginx
+echo "Starting Nginx in foreground..."
 exec nginx -g "daemon off;"
