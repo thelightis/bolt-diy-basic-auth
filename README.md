@@ -33,8 +33,8 @@ This is a Railway template that configures the bolt.diy application with Nginx b
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/protected-bolt-diy.git
-cd protected-bolt-diy
+git clone https://github.com/thelightis/bolt-diy-basic-auth.git
+cd bolt-diy-basic-auth
 
 # Run with Docker Compose
 docker-compose up -d
