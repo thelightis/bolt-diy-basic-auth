@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  # Auth proxy with Nginx
+  nginx-auth:
+    build: .
+    ports:
+      - "80:80"
+    environment:
+      - AUTH_USER=${AUTH_USER:-admin}
+      - AUTH_PASSWORD=${AUTH_PASSWORD:-railway}
+    depends_on:
+      - bolt-diy
+  
+  # Original bolt.diy service (unmodified)
+  bolt-diy:
+    image: ghcr.io/stackblitz-labs/bolt.diy:sha-8116809
+    # Only expose to internal Docker network
+    expose:
+      - "5173"

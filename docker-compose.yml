@@ -1,16 +1,42 @@
 version: '3'
 
 services:
-  bolt-diy-auth:
+  # Auth proxy with Nginx
+  nginx-auth:
     build: .
     ports:
       - "8080:80"
-      - "3000:3000"  # Also exposing bolt.diy application port
     environment:
       - AUTH_USER=admin
       - AUTH_PASSWORD=railway
-      # Add any specific bolt.diy environment variables here
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf.template
       - ./start.sh:/start.sh
     restart: unless-stopped
+    # Connect to the bolt-diy service network
+    networks:
+      - bolt-network
+    # Depend on bolt service
+    depends_on:
+      - bolt-diy
+  
+  # Original bolt.diy service (unmodified)
+  bolt-diy:
+    image: ghcr.io/stackblitz-labs/bolt.diy:sha-8116809
+    networks:
+      - bolt-network
+    # Removing direct port exposure
+    # ports:
+    #   - "5173:5173"  # Direct access for debugging
+    expose:
+      - "5173"  # Only expose to internal network
+    volumes:
+      - bolt-data:/app
+
+networks:
+  bolt-network:
+    driver: bridge
+
+volumes:
+  bolt-data:
+    driver: local
